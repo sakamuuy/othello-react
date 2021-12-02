@@ -1,0 +1,6 @@
+.square {
+  width: calc((100vw - 16px) / 8);
+  height: calc((100vw - 16px) / 8);
+  border-top: 1px solid #212121;
+  border-left: 1px solid #212121;
+}

@@ -1,4 +1,4 @@
-import { Presentation } from "./Piece"
+import { Presentation } from "./Disc"
 
 export type Props = {
   belongColor: 'WHITE' | 'BLACK',

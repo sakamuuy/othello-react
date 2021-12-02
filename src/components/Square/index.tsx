@@ -1,5 +1,7 @@
+import './index.css'
+
 export const Square = () => {
   return (
-    <div></div>
+    <div className="square"></div>
   )
 }

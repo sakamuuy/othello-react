@@ -1,0 +1,9 @@
+.board {
+  background-color: #6D9886;
+  border-right: 1px solid #212121;
+  border-bottom: 1px solid #212121;
+}
+
+.board__row {
+  display: flex;
+}
