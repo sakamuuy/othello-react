@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Props } from './Board'
 
 const arr8 = Array(8).fill(0)
@@ -27,8 +27,13 @@ export const useBoard = (): Props => {
     ))
   }, [])
 
+  const onClickSquare = useCallback((row: number, col: number) => {
+    console.log(row, col)
+  }, [squarePropsArr, setSquarePropsArr])
+
   return {
     squarePropsArr,
-    currentPlayer
+    currentPlayer,
+    onClickSquare
   }
 }
