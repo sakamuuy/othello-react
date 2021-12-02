@@ -1,14 +1,18 @@
-import { Square } from '../Square'
+import { Square, Props as SquareProps } from '../Square'
 import './index.css'
 
-const arr8len = Array(8).fill(0)
-export const Presentation = () => {
+export type Props = {
+  squarePropsArr: SquareProps[][],
+  currentPlayer: SquareProps['player']
+}
+
+export const Presentation = ({ squarePropsArr, currentPlayer }: Props) => {
   return (
     <div className="board">
-      {arr8len.map((_, i) => (
+      {squarePropsArr.map((row, i) => (
         <div key={`row:${i}`} className='board__row'>
-          {arr8len.map((_, j) => (
-            <Square key={`row:${i}-col:${j}`} />
+          {row.map((state, j) => (
+            <Square key={`row:${i}-col:${j}`} isSet={state.isSet} player={state.player} />
           ))}
         </div>
       ))}

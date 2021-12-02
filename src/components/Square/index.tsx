@@ -1,7 +1,12 @@
-import './index.css'
+import { Presentation } from "./Square"
 
-export const Square = () => {
+export type Props = {
+  isSet: boolean
+  player?: 'Player1' | 'Player2'
+}
+
+export const Square = (props: Props) => {
   return (
-    <div className="square"></div>
+    <Presentation {...props} />
   )
 }

@@ -1,5 +1,7 @@
 import { Presentation } from "./Board"
+import { useBoard } from "./useBoard"
 
 export const Board = () => {
-  return <Presentation />
+  const props = useBoard()
+  return <Presentation {...props} />
 }
