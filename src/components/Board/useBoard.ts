@@ -34,16 +34,17 @@ export const useBoard = (): Props => {
     col: number
   }
 
-  const getAroundEnemiesDiscs = (row: number, col: number) => {
+  // Return null when the result is out of the board
+  const getNormalizedState = (row:number, col:number): AroundState | null => {
+    return (row < 0 || row > 7 || col < 0 || col > 7 )? 
+      {
+        ...squarePropsArr[row][col],
+        row,
+        col
+      } : null
+  }
 
-    const getNormalizedState = (row:number, col:number): AroundState | null => {
-      return (row < 0 || row > 7 || col < 0 || col > 8 )? 
-        {
-          ...squarePropsArr[row][col],
-          row,
-          col
-        } : null
-    }
+  const getAroundEnemiesDiscs = (row: number, col: number) => {
     const arroundStatus = [
       getNormalizedState(row - 1, col - 1),
       getNormalizedState(row - 1, col),
@@ -57,14 +58,32 @@ export const useBoard = (): Props => {
     return arroundStatus.filter((status): status is NonNullable<AroundState> => status !== null && status?.isSet && status.player !== currentPlayer)
   }
 
-  const getDirection = (prevRow: number, prevCol: number) => {
+  const getCanSandwitchDiscs = (row: number, col: number, foundEnemieDisc: AroundState): AroundState[] => {
+    const xDir = foundEnemieDisc.col - col
+    const yDir = foundEnemieDisc.row - row
+    let nextX = col + xDir
+    let nextY = col + yDir 
+    const canSandwitchDiscs: AroundState[] = []
 
+    while (1) {
+      const nextDirDisc = getNormalizedState(nextY, nextX)
+      if (nextDirDisc !== null && nextDirDisc.isSet && nextDirDisc.player !== currentPlayer) {
+        canSandwitchDiscs.push(nextDirDisc)
+        nextX += xDir
+        nextY += yDir
+      } else {
+        break
+      }
+    }
+
+    return canSandwitchDiscs
   }
 
   const onClickSquare = useCallback((row: number, col: number) => {
     const aroundEnemiesDiscs: AroundState[] = getAroundEnemiesDiscs(row, col)
     if (aroundEnemiesDiscs.length === 0) return;
 
+    const canSandwitchDiscs = aroundEnemiesDiscs.map((disc) => getCanSandwitchDiscs(row, col, disc))
     
 
   }, [squarePropsArr, setSquarePropsArr])
