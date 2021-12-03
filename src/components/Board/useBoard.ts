@@ -65,9 +65,18 @@ export const useBoard = (): Props => {
     let nextX = col + xDir
     let nextY = row + yDir 
     const canSandwitchDiscs: AroundState[] = []
+    let isSandwitch = false
 
     while (1) {
       const nextDirDisc = getNormalizedState(nextY, nextX)
+
+      if (canSandwitchDiscs.length > 0 && 
+          nextDirDisc !== null && 
+          nextDirDisc.isSet && 
+          nextDirDisc.player === currentPlayer.current) {
+        isSandwitch = true
+      }
+
       if (nextDirDisc !== null && nextDirDisc.isSet && nextDirDisc.player !== currentPlayer.current) {
         canSandwitchDiscs.push(nextDirDisc)
         nextX += xDir
@@ -77,7 +86,7 @@ export const useBoard = (): Props => {
       }
     }
 
-    return canSandwitchDiscs
+    return isSandwitch? canSandwitchDiscs : []
   }
 
   const onClickSquare = useCallback((row: number, col: number) => {
