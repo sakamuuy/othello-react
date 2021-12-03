@@ -96,6 +96,8 @@ export const useBoard = (): Props => {
 
     const canSandwitchDiscs = aroundEnemiesDiscs.map((disc) => getCanSandwitchDiscs(row, col, disc))
 
+    if (canSandwitchDiscs.filter((dir) => dir.length > 0).length === 0) return
+
     const tmp = [...squarePropsArr]
     tmp[row][col] = {
       ...tmp[row][col],
