@@ -27,8 +27,46 @@ export const useBoard = (): Props => {
     ))
   }, [])
 
+  type AroundState = {
+    isSet: Props["squarePropsArr"][number][number]["isSet"]
+    player?: Props["squarePropsArr"][number][number]["player"]
+    row: number
+    col: number
+  }
+
+  const getAroundEnemiesDiscs = (row: number, col: number) => {
+
+    const getNormalizedState = (row:number, col:number): AroundState | null => {
+      return (row < 0 || row > 7 || col < 0 || col > 8 )? 
+        {
+          ...squarePropsArr[row][col],
+          row,
+          col
+        } : null
+    }
+    const arroundStatus = [
+      getNormalizedState(row - 1, col - 1),
+      getNormalizedState(row - 1, col),
+      getNormalizedState(row - 1, col + 1),
+      getNormalizedState(row, col - 1),
+      getNormalizedState(row, col + 1),
+      getNormalizedState(row + 1, col -1),
+      getNormalizedState(row + 1, col),
+      getNormalizedState(row + 1, col + 1),
+    ]
+    return arroundStatus.filter((status): status is NonNullable<AroundState> => status !== null && status?.isSet && status.player !== currentPlayer)
+  }
+
+  const getDirection = (prevRow: number, prevCol: number) => {
+
+  }
+
   const onClickSquare = useCallback((row: number, col: number) => {
-    console.log(row, col)
+    const aroundEnemiesDiscs: AroundState[] = getAroundEnemiesDiscs(row, col)
+    if (aroundEnemiesDiscs.length === 0) return;
+
+    
+
   }, [squarePropsArr, setSquarePropsArr])
 
   return {
